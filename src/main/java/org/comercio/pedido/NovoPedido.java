@@ -24,7 +24,7 @@ public class NovoPedido {
 		codigoPedido = 0;
 	}
 
-	public NovoPedido(final Pedido pedido, final NovoPedido novoPedido) {
+	NovoPedido(final Pedido pedido, final NovoPedido novoPedido) {
 		this.produtos = novoPedido.getProdutos();
 		this.codigoEndereco = novoPedido.codigoEndereco;
 		this.codigoCliente = novoPedido.codigoCliente;
