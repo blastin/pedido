@@ -23,15 +23,14 @@ class Servico implements Pedidos {
 
 		log.info("Novo pedido");
 
-		// OBTER PRODUTOS
 		final Collection<Produto> produtos = pedidoIO.produtos(novoPedido);
 
 		final Pedido pedido = new Pedido(produtos);
 
 		final Situacao pedidoDisponivelParaReserva = pedidoIO.reservaPedido(pedido);
 
-		// EXECUTAR COMANDO COM SITUAÇÃO DE PEDIDO
-		comandos.executar(pedidoDisponivelParaReserva, comando -> comando.inserirObjeto(novoPedido));
+		comandos.executar(pedidoDisponivelParaReserva,
+				comando -> comando.inserirObjeto(new NovoPedido(pedido, novoPedido)));
 
 	}
 
