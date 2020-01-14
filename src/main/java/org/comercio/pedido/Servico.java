@@ -2,6 +2,8 @@ package org.comercio.pedido;
 
 import java.util.Collection;
 
+import org.comercio.MapaComando;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -9,9 +11,9 @@ class Servico implements Pedidos {
 
 	private final PedidoIO pedidoIO;
 
-	private final Comandos<Situacao> comandos;
+	private final MapaComando<Situacao> comandos;
 
-	Servico(final PedidoIO pedidoIO, Comandos<Situacao> comandos) {
+	Servico(final PedidoIO pedidoIO, MapaComando<Situacao> comandos) {
 		this.pedidoIO = pedidoIO;
 		this.comandos = comandos;
 	}

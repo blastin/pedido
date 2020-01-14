@@ -2,9 +2,7 @@ package org.comercio;
 
 import java.util.HashMap;
 
-import org.comercio.pedido.Comandos;
-
-public class MapeamentoComandos<T> implements Comandos<T> {
+public class MapeamentoComandos<T> implements MapaComando<T> {
 
 	private HashMap<T, Comando> mapaComandos;
 
@@ -15,29 +13,16 @@ public class MapeamentoComandos<T> implements Comandos<T> {
 	@Override
 	public void executar(final T t, Visitor visitor) {
 		if (!mapaComandos.containsKey(t)) {
-			throw new ComandoNaoEncontratoException(
+			throw new ComandoNaoEncontradoException(
 					String.format("Não foi possivel encontrar comando = %s", t.getClass()));
 		}
 		visitor.visitar(mapaComandos.get(t)).manipular();
 	}
 
 	@Override
-	public Comandos<T> inserirComando(final T t, final Comando comando) {
+	public MapaComando<T> inserirComando(final T t, final Comando comando) {
 		mapaComandos.put(t, comando);
 		return this;
-	}
-
-	static class ComandoNaoEncontratoException extends RuntimeException {
-
-		public ComandoNaoEncontratoException(final String mensagem) {
-			super(mensagem);
-		}
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 2145149798351496410L;
-
 	}
 
 }

@@ -2,6 +2,7 @@ package org.comercio.pedido;
 
 import java.util.Collections;
 
+import org.comercio.MapaComando;
 import org.comercio.MapeamentoComandos;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +12,7 @@ public class NovoPedidoTest {
 	@Test
 	public void realizarNovoPedidoIndisponivelTest() {
 
-		final Comandos<Situacao> comandos = new MapeamentoComandos<Situacao>().inserirComando(Situacao.INDISPONIVEL,
+		final MapaComando<Situacao> comandos = new MapeamentoComandos<Situacao>().inserirComando(Situacao.INDISPONIVEL,
 				new ComandoIndisponivel());
 
 		final RepositorioCache pedidoIO = new RepositorioCache();
@@ -39,7 +40,7 @@ public class NovoPedidoTest {
 
 		};
 
-		final Comandos<Situacao> comandos = new MapeamentoComandos<Situacao>().inserirComando(Situacao.DISPONIVEL,
+		final MapaComando<Situacao> comandos = new MapeamentoComandos<Situacao>().inserirComando(Situacao.DISPONIVEL,
 				new ComandoDisponivel());
 
 		final Pedidos pedidos = new Servico(pedidoIO, comandos);
