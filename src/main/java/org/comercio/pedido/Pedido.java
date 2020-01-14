@@ -32,7 +32,7 @@ class Pedido {
 	}
 
 	BigDecimal custoTotal() {
-		return produtos.stream().map(Produto::obterCusto).reduce(BigDecimal.ZERO, (a, b) -> a.add(b));
+		return produtos.stream().map(Produto::obterCusto).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 	Boolean pedidoDespachado() {
