@@ -30,26 +30,8 @@ class Servico implements Pedidos {
 
 		final Situacao pedidoDisponivelParaReserva = pedidoIO.reservaPedido(pedido);
 
-		// VERIFICAR SE PEDIDO É DISPONIVEL PARA RESERVA
-
-		// CASO NÃO SEJA, DISPARAR EVENTO PARA NOTIFICAR INDISPONIBILIDADE
-
-		if (pedidoDisponivelParaReserva.equals(Situacao.INDISPONIVEL)) {
-			log.info("Pedido indisponivel");
-			comandos.executar(pedidoDisponivelParaReserva, comando -> comando.inserirObjeto(novoPedido));
-		}
-
-		// CASO EXISTA DISPONIBILIDADE DE RESERVA , CALCULAR CUSTO TOTAL DO PEDIDO
-
-		else {
-
-			log.info("Pedido disponivel");
-
-			// DISPARAR EVENTO PARA AGREGAR CUSTO DE FRETE
-
-			comandos.executar(Situacao.DISPONIVEL,
-					comando -> comando.inserirObjeto(new NovoPedido(pedido, novoPedido)));
-		}
+		// EXECUTAR COMANDO COM SITUAÇÃO DE PEDIDO
+		comandos.executar(pedidoDisponivelParaReserva, comando -> comando.inserirObjeto(novoPedido));
 
 	}
 
