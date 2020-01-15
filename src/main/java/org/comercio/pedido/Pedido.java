@@ -20,7 +20,7 @@ class Pedido {
 
 	Pedido(Pedido pedido, IdentificadorPedido identificadorPedido) {
 		this.produtos = pedido.produtos;
-		codigo = identificadorPedido.obterIdentificador()
+		codigo = identificadorPedido.obterIdentificador().filter(valor -> !valor.equals(0))
 				.orElseThrow(() -> new PedidoNaoReservadoException("Pedido não reservado"));
 	}
 

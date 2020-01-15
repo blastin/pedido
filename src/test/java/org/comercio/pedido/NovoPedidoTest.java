@@ -40,7 +40,8 @@ public class NovoPedidoTest {
 
 			@Override
 			public IdentificadorPedido reservaPedido(Collection<Integer> collection) {
-				return new IdentificadorPedido(0);
+				super.reservaPedido(collection);
+				return new IdentificadorPedido(1);
 			}
 
 		};

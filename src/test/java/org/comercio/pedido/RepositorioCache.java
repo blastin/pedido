@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 class RepositorioCache implements PedidoIO {
 
-	private Boolean statusAcesso;
+	private int statusAcesso;
 
 	private final Integer identificador;
 
@@ -15,13 +15,14 @@ class RepositorioCache implements PedidoIO {
 
 	@Override
 	public IdentificadorPedido reservaPedido(final Collection<Integer> collection) {
+		statusAcesso += 1;
 		return new IdentificadorPedido(identificador);
 	}
 
 	@Override
 	public Collection<Produto> produtos(final NovoPedido novoPedido) {
 
-		statusAcesso = Boolean.TRUE;
+		statusAcesso += 1;
 
 		Collection<Produto> produtos = new HashSet<>();
 
@@ -33,7 +34,7 @@ class RepositorioCache implements PedidoIO {
 	}
 
 	Boolean repositorioAcessado() {
-		return statusAcesso.equals(Boolean.TRUE);
+		return statusAcesso == 2;
 	}
 
 }
