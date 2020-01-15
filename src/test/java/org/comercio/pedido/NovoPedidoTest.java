@@ -1,5 +1,6 @@
 package org.comercio.pedido;
 
+import java.util.Collection;
 import java.util.Collections;
 
 import org.comercio.MapaComando;
@@ -34,7 +35,7 @@ public class NovoPedidoTest {
 		final RepositorioCache pedidoIO = new RepositorioCache() {
 
 			@Override
-			public Situacao reservaPedido(final Pedido pedido) {
+			public Situacao reservaPedido(Collection<Integer> collection) {
 				return Situacao.DISPONIVEL;
 			}
 

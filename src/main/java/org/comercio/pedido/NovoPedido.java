@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 @Getter
 public class NovoPedido {
 
@@ -31,6 +33,7 @@ public class NovoPedido {
 		this.codigoPedido = pedido.getCodigo();
 	}
 
+	@ToString
 	@Getter
 	static class ProdutoCarrinho {
 

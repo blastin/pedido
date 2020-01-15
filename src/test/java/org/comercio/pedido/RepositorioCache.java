@@ -8,7 +8,7 @@ class RepositorioCache implements PedidoIO {
 	private Boolean statusAcesso;
 
 	@Override
-	public Situacao reservaPedido(final Pedido pedido) {
+	public Situacao reservaPedido(Collection<Integer> collection) {
 		return Situacao.INDISPONIVEL;
 	}
 

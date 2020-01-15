@@ -15,13 +15,6 @@ class Produto {
 
 	private final Float peso;
 
-	Produto(final Integer codigo, final String custo, final Integer desconto, final Float peso) {
-		this.codigo = codigo;
-		this.custo = new BigDecimal(custo);
-		this.desconto = desconto;
-		this.peso = peso;
-	}
-
 	Produto(final Integer codigo, final BigDecimal custo, final Integer desconto, final Float peso) {
 		this.codigo = codigo;
 		this.custo = custo;

@@ -12,7 +12,7 @@ class ComandoIndisponivel implements Comando {
 	@Override
 	public void manipular() {
 		log.info("Manipulando indisponibilidade");
-		log.info("Recebi novoPedido = {}", novoPedido.getCodigoCliente());
+		log.info("Recebi novoPedido = {}", novoPedido);
 	}
 
 	@Override

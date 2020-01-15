@@ -27,10 +27,15 @@ class Servico implements Pedidos {
 
 		final Pedido pedido = new Pedido(produtos);
 
-		final Situacao pedidoDisponivelParaReserva = pedidoIO.reservaPedido(pedido);
+		final Situacao pedidoDisponivelParaReserva = pedidoIO.reservaPedido(pedido.identificadoresProduto());
 
-		comandos.executar(pedidoDisponivelParaReserva,
-				comando -> comando.inserirObjeto(new NovoPedido(pedido, novoPedido)));
+		if (pedidoDisponivelParaReserva.equals(Situacao.DISPONIVEL)) {
+			comandos.executar(pedidoDisponivelParaReserva,
+					comando -> comando.inserirObjeto(new CalculoFrete(pedido, novoPedido)));
+		} else {
+			comandos.executar(pedidoDisponivelParaReserva,
+					comando -> comando.inserirObjeto(new NovoPedido(pedido, novoPedido)));
+		}
 
 	}
 

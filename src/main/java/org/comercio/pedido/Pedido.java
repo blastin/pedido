@@ -13,18 +13,9 @@ class Pedido {
 
 	private final Collection<Produto> produtos;
 
-	private final Situacao situacao;
-
 	Pedido(final Collection<Produto> produtos) {
 		this.produtos = produtos;
-		situacao = Situacao.AGUARDANDO_PAGAMENTO;
 		codigo = 0;
-	}
-
-	Pedido(final Integer codigo, final Situacao situacao, final Collection<Produto> produtos) {
-		this.codigo = codigo;
-		this.produtos = produtos;
-		this.situacao = situacao;
 	}
 
 	Collection<Integer> identificadoresProduto() {
@@ -35,11 +26,4 @@ class Pedido {
 		return produtos.stream().map(Produto::obterCusto).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
-	Boolean pedidoDespachado() {
-		return situacao.equals(Situacao.DESPACHADO);
-	}
-
-	Boolean pedidoIndisponivel() {
-		return situacao.equals(Situacao.INDISPONIVEL);
-	}
 }

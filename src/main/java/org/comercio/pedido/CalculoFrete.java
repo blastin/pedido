@@ -2,19 +2,25 @@ package org.comercio.pedido;
 
 import java.math.BigDecimal;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
-@Builder
+@ToString
 @Getter
-class CalculoFrete {
+public class CalculoFrete {
 
-	private Integer codigoCliente;
+	private final Integer codigoCliente;
 
-	private Integer codigoPedido;
+	private final Integer codigoPedido;
 
-	private Integer codigoEndeco;
+	private final Integer codigoEndeco;
 
-	private BigDecimal custoPedido;
+	private final BigDecimal custoPedido;
 
+	CalculoFrete(final Pedido pedido, final NovoPedido novoPedido) {
+		codigoPedido = pedido.getCodigo();
+		custoPedido = pedido.custoTotal();
+		codigoCliente = novoPedido.getCodigoCliente();
+		codigoEndeco = novoPedido.getCodigoEndereco();
+	}
 }
