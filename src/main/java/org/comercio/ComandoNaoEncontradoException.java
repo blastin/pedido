@@ -2,7 +2,7 @@ package org.comercio;
 
 public class ComandoNaoEncontradoException extends RuntimeException {
 
-	public ComandoNaoEncontradoException(final String mensagem) {
+	ComandoNaoEncontradoException(final String mensagem) {
 		super(mensagem);
 	}
 
