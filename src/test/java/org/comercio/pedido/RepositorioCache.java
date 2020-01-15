@@ -7,13 +7,19 @@ class RepositorioCache implements PedidoIO {
 
 	private Boolean statusAcesso;
 
-	@Override
-	public Situacao reservaPedido(Collection<Integer> collection) {
-		return Situacao.INDISPONIVEL;
+	private final Integer identificador;
+
+	public RepositorioCache(Integer identificador) {
+		this.identificador = identificador;
 	}
 
 	@Override
-	public Collection<Produto> produtos(NovoPedido novoPedido) {
+	public IdentificadorPedido reservaPedido(final Collection<Integer> collection) {
+		return new IdentificadorPedido(identificador);
+	}
+
+	@Override
+	public Collection<Produto> produtos(final NovoPedido novoPedido) {
 
 		statusAcesso = Boolean.TRUE;
 

@@ -9,16 +9,22 @@ class ComandoIndisponivel implements Comando {
 
 	private NovoPedido novoPedido;
 
+	private Boolean visita;
+
 	@Override
 	public void manipular() {
-		log.info("Manipulando indisponibilidade");
-		log.info("Recebi novoPedido = {}", novoPedido);
+		log.info("Pedido Indisponível = {}", novoPedido);
+		visita = Boolean.TRUE;
 	}
 
 	@Override
 	public <T> Comando inserirObjeto(final T t) {
 		novoPedido = (NovoPedido) t;
 		return this;
+	}
+
+	public Boolean visitado() {
+		return visita;
 	}
 
 }

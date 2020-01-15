@@ -13,10 +13,12 @@ public class NovoPedidoTest {
 	@Test
 	public void realizarNovoPedidoIndisponivelTest() {
 
-		final MapaComando<Situacao> comandos = new MapeamentoComandos<Situacao>().inserirComando(Situacao.INDISPONIVEL,
-				new ComandoIndisponivel());
+		final ComandoIndisponivel comando = new ComandoIndisponivel();
 
-		final RepositorioCache pedidoIO = new RepositorioCache();
+		final MapaComando<Situacao> comandos = new MapeamentoComandos<Situacao>().inserirComando(Situacao.INDISPONIVEL,
+				comando);
+
+		final RepositorioCache pedidoIO = new RepositorioCache(null);
 
 		final Pedidos pedidos = new Servico(pedidoIO, comandos);
 
@@ -27,22 +29,26 @@ public class NovoPedidoTest {
 
 		Assert.assertTrue("Repositorio Cache Acessado", pedidoIO.repositorioAcessado());
 
+		Assert.assertTrue("comando deve ser visitado", comando.visitado());
+
 	}
 
 	@Test
 	public void realizarNovoPedidoDisponivelTest() {
 
-		final RepositorioCache pedidoIO = new RepositorioCache() {
+		final RepositorioCache pedidoIO = new RepositorioCache(1) {
 
 			@Override
-			public Situacao reservaPedido(Collection<Integer> collection) {
-				return Situacao.DISPONIVEL;
+			public IdentificadorPedido reservaPedido(Collection<Integer> collection) {
+				return new IdentificadorPedido(0);
 			}
 
 		};
 
+		final ComandoDisponivel comando = new ComandoDisponivel();
+
 		final MapaComando<Situacao> comandos = new MapeamentoComandos<Situacao>().inserirComando(Situacao.DISPONIVEL,
-				new ComandoDisponivel());
+				comando);
 
 		final Pedidos pedidos = new Servico(pedidoIO, comandos);
 
@@ -52,6 +58,8 @@ public class NovoPedidoTest {
 		pedidos.novoPedido(novoPedido);
 
 		Assert.assertTrue("Repositorio Cache Acessado", pedidoIO.repositorioAcessado());
+
+		Assert.assertTrue("comando deve ser visitado", comando.visitado());
 
 	}
 }

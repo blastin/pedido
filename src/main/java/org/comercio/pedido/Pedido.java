@@ -18,6 +18,12 @@ class Pedido {
 		codigo = 0;
 	}
 
+	Pedido(Pedido pedido, IdentificadorPedido identificadorPedido) {
+		this.produtos = pedido.produtos;
+		codigo = identificadorPedido.obterIdentificador()
+				.orElseThrow(() -> new PedidoNaoReservadoException("Pedido não reservado"));
+	}
+
 	Collection<Integer> identificadoresProduto() {
 		return produtos.stream().map(Produto::getCodigo).collect(Collectors.toSet());
 	}

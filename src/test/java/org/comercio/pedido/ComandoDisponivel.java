@@ -9,6 +9,8 @@ class ComandoDisponivel implements Comando {
 
 	private CalculoFrete calculoFrete;
 
+	private Boolean visita;
+	
 	@Override
 	public <T> Comando inserirObjeto(final T t) {
 		calculoFrete = (CalculoFrete) t;
@@ -18,6 +20,11 @@ class ComandoDisponivel implements Comando {
 	@Override
 	public void manipular() {
 		log.info("Pedido Disponivel. Calcular frete {}", calculoFrete);
+		visita = Boolean.TRUE;
+	}
+
+	public Boolean visitado() {
+		return visita;
 	}
 
 }
