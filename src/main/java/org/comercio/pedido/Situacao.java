@@ -8,7 +8,7 @@ enum Situacao {
 
 	private final Integer codigo;
 
-	private Situacao(Integer codigo) {
+	private Situacao(final Integer codigo) {
 		this.codigo = codigo;
 	}
 

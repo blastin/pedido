@@ -5,16 +5,11 @@ import org.comercio.ComandoNaoEncontradoException;
 import org.comercio.MapaComando;
 import org.comercio.MapeamentoComandos;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class MapaComandoTest {
 
 	static final String OBJETO = "Teste";
-
-	@Rule
-	public ExpectedException excessao = ExpectedException.none();
 
 	@Test
 	public void quandoMapComandoExistente() {
@@ -30,10 +25,8 @@ public class MapaComandoTest {
 
 	}
 
-	@Test
+	@Test(expected = ComandoNaoEncontradoException.class)
 	public void quandoMapComandoInexistente() {
-
-		excessao.expect(ComandoNaoEncontradoException.class);
 
 		final MapaComando<Integer> mapa = new MapeamentoComandos<>();
 

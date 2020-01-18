@@ -3,12 +3,20 @@ package org.comercio.pedido;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.comercio.EntradaInformacoesException;
 import org.comercio.MapaComando;
 import org.comercio.MapeamentoComandos;
+import org.comercio.produto.ProdutoCarrinho;
+import org.comercio.produto.ProdutosGateway;
+import org.comercio.produto.ServicoProduto;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class NovoPedidoTest {
+
+	private static final String CUSTO = "100";
+
+	private static final Collection<ProdutoCarrinho> COLECAO = Collections.singleton(new ProdutoCarrinho(1, CUSTO));
 
 	@Test
 	public void realizarNovoPedidoIndisponivelTest() {
@@ -20,10 +28,11 @@ public class NovoPedidoTest {
 
 		final RepositorioCache pedidoIO = new RepositorioCache(null);
 
-		final Pedidos pedidos = new Servico(pedidoIO, comandos);
+		final ProdutosGateway produtosGateway = new ServicoProduto();
 
-		final NovoPedido novoPedido = new NovoPedido(1, 1,
-				Collections.singleton(new NovoPedido.ProdutoCarrinho(1, "100")));
+		final Pedidos pedidos = new Servico(pedidoIO, comandos, produtosGateway);
+
+		final NovoPedido novoPedido = new NovoPedido(1, 1, Collections.singleton(new ProdutoCarrinho(1, CUSTO)));
 
 		pedidos.novoPedido(novoPedido);
 
@@ -39,7 +48,7 @@ public class NovoPedidoTest {
 		final RepositorioCache pedidoIO = new RepositorioCache(1) {
 
 			@Override
-			public IdentificadorPedido reservaPedido(Collection<Integer> collection) {
+			public IdentificadorPedido reservaPedido(final Collection<Integer> collection) {
 				super.reservaPedido(collection);
 				return new IdentificadorPedido(1);
 			}
@@ -51,10 +60,11 @@ public class NovoPedidoTest {
 		final MapaComando<Situacao> comandos = new MapeamentoComandos<Situacao>().inserirComando(Situacao.DISPONIVEL,
 				comando);
 
-		final Pedidos pedidos = new Servico(pedidoIO, comandos);
+		final ProdutosGateway produtosGateway = new ServicoProduto();
 
-		final NovoPedido novoPedido = new NovoPedido(2, 5,
-				Collections.singleton(new NovoPedido.ProdutoCarrinho(546, "200")));
+		final Pedidos pedidos = new Servico(pedidoIO, comandos, produtosGateway);
+
+		final NovoPedido novoPedido = new NovoPedido(2, 5, Collections.singleton(new ProdutoCarrinho(546, "200")));
 
 		pedidos.novoPedido(novoPedido);
 
@@ -63,4 +73,45 @@ public class NovoPedidoTest {
 		Assert.assertTrue("comando deve ser visitado", comando.visitado());
 
 	}
+
+	@Test(expected = EntradaInformacoesException.class)
+	public void quandoIdentificadorPedidoNulo() {
+		new NovoPedido(null, 1, COLECAO);
+	}
+
+	@Test(expected = EntradaInformacoesException.class)
+	public void quandoIdentificadorPedidoIgualZero() {
+		new NovoPedido(0, 1, COLECAO);
+	}
+
+	@Test(expected = EntradaInformacoesException.class)
+	public void quandoIdentificadorPedidoMenorZero() {
+		new NovoPedido(-1, 1, COLECAO);
+	}
+
+	@Test(expected = EntradaInformacoesException.class)
+	public void quandoIdentificadorEnderecoNulo() {
+		new NovoPedido(1, null, COLECAO);
+	}
+
+	@Test(expected = EntradaInformacoesException.class)
+	public void quandoIdentificadorEnderecoIgualZero() {
+		new NovoPedido(1, 0, COLECAO);
+	}
+
+	@Test(expected = EntradaInformacoesException.class)
+	public void quandoIdentificadorEnderecodorMenorZero() {
+		new NovoPedido(1, -1, COLECAO);
+	}
+
+	@Test(expected = EntradaInformacoesException.class)
+	public void quandoProdutoNulo() {
+		new NovoPedido(1, 1, null);
+	}
+
+	@Test(expected = EntradaInformacoesException.class)
+	public void quandoProdutoVazio() {
+		new NovoPedido(1, 1, Collections.emptyList());
+	}
+
 }

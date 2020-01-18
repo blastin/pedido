@@ -1,8 +1,10 @@
 package org.comercio.pedido;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
-import java.util.stream.Collectors;
+
+import org.comercio.produto.Produto;
 
 import lombok.Getter;
 
@@ -13,23 +15,18 @@ class Pedido {
 
 	private final Collection<Produto> produtos;
 
-	Pedido(final Collection<Produto> produtos) {
+	Pedido(final Collection<Produto> produtos, final IdentificadorPedido identificadorPedido) {
 		this.produtos = produtos;
-		codigo = 0;
-	}
-
-	Pedido(Pedido pedido, IdentificadorPedido identificadorPedido) {
-		this.produtos = pedido.produtos;
-		codigo = identificadorPedido.obterIdentificador().filter(valor -> !valor.equals(0))
-				.orElseThrow(() -> new PedidoNaoReservadoException("Pedido não reservado"));
-	}
-
-	Collection<Integer> identificadoresProduto() {
-		return produtos.stream().map(Produto::getCodigo).collect(Collectors.toSet());
+		codigo = identificadorPedido.getIdentificador();
 	}
 
 	BigDecimal custoTotal() {
-		return produtos.stream().map(Produto::obterCusto).reduce(BigDecimal.ZERO, BigDecimal::add);
+		return produtos.stream().map(Produto::obterCusto).reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2,
+				RoundingMode.DOWN);
+	}
+
+	boolean reservado() {
+		return codigo != null && codigo > 0;
 	}
 
 }
