@@ -1,16 +1,21 @@
 package org.comercio.pedido;
 
 import java.util.Collection;
-import java.util.HashSet;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 class RepositorioCache implements PedidoIO {
 
 	private int statusAcesso;
 
 	private final Integer identificador;
 
+	private Situacao situacao;
+
 	public RepositorioCache(Integer identificador) {
 		this.identificador = identificador;
+		situacao = Situacao.AGUARDANDO_PAGAMENTO;
 	}
 
 	@Override
@@ -20,21 +25,17 @@ class RepositorioCache implements PedidoIO {
 	}
 
 	@Override
-	public Collection<Produto> produtos(final NovoPedido novoPedido) {
-
-		statusAcesso += 1;
-
-		Collection<Produto> produtos = new HashSet<>();
-
-		novoPedido.getProdutos()
-				.forEach(produto -> produtos.add(new Produto(produto.getCodigo(), produto.getCusto(), 30, 2.2f)));
-
-		return produtos;
-
+	public void pago(Integer obterIdentificadorPedido) {
+		log.info("Pedido pago");
+		situacao = Situacao.PAGO;
 	}
 
 	Boolean repositorioAcessado() {
-		return statusAcesso == 2;
+		return statusAcesso == 1;
+	}
+
+	Boolean pedidoFoiPago() {
+		return situacao.equals(Situacao.PAGO);
 	}
 
 }

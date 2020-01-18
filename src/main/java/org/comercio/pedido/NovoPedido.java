@@ -1,7 +1,10 @@
 package org.comercio.pedido;
 
-import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.stream.Collectors;
+
+import org.comercio.EntradaInformacoesException;
+import org.comercio.produto.ProdutoCarrinho;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -9,8 +12,6 @@ import lombok.ToString;
 @ToString
 @Getter
 public class NovoPedido {
-
-	private final Integer codigoPedido;
 
 	private final Integer codigoCliente;
 
@@ -20,30 +21,24 @@ public class NovoPedido {
 
 	public NovoPedido(final Integer codigoCliente, final Integer codigoEndereco,
 			final Collection<ProdutoCarrinho> produtos) {
-		this.produtos = produtos;
-		this.codigoEndereco = codigoEndereco;
-		this.codigoCliente = codigoCliente;
-		codigoPedido = 0;
-	}
-
-	NovoPedido(final Pedido pedido, final NovoPedido novoPedido) {
-		this.produtos = novoPedido.getProdutos();
-		this.codigoEndereco = novoPedido.codigoEndereco;
-		this.codigoCliente = novoPedido.codigoCliente;
-		this.codigoPedido = pedido.getCodigo();
-	}
-
-	@ToString
-	@Getter
-	static class ProdutoCarrinho {
-
-		private final Integer codigo;
-
-		private final BigDecimal custo;
-
-		ProdutoCarrinho(final Integer codigo, final String custo) {
-			this.codigo = codigo;
-			this.custo = new BigDecimal(custo);
+		if (codigoCliente == null || codigoCliente <= 0) {
+			throw new EntradaInformacoesException(
+					"Identificador de cliente não pode ser nulo ou com valor menor que 0");
 		}
+		this.codigoCliente = codigoCliente;
+		if (codigoEndereco == null || codigoEndereco <= 0) {
+			throw new EntradaInformacoesException(
+					"Identificador de endereço não pode ser nulo ou com valor menor que 0");
+		}
+		this.codigoEndereco = codigoEndereco;
+		if (produtos == null || produtos.isEmpty()) {
+			throw new EntradaInformacoesException("Coleção de produtos não pode ser nulo ou vazio");
+		}
+		this.produtos = produtos;
 	}
+
+	public Collection<Integer> identificadoresProdutos() {
+		return produtos.stream().map(ProdutoCarrinho::getCodigo).collect(Collectors.toSet());
+	}
+
 }

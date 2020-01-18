@@ -6,6 +6,6 @@ interface PedidoIO {
 
 	IdentificadorPedido reservaPedido(final Collection<Integer> collection);
 
-	Collection<Produto> produtos(NovoPedido novoPedido);
-	
+	void pago(Integer obterIdentificadorPedido);
+
 }

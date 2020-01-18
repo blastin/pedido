@@ -3,6 +3,8 @@ package org.comercio.pedido;
 import java.util.Collection;
 
 import org.comercio.MapaComando;
+import org.comercio.produto.Produto;
+import org.comercio.produto.ProdutosGateway;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,11 +13,14 @@ class Servico implements Pedidos {
 
 	private final PedidoIO pedidoIO;
 
+	private final ProdutosGateway produtosGateway;
+
 	private final MapaComando<Situacao> comandos;
 
-	Servico(final PedidoIO pedidoIO, MapaComando<Situacao> comandos) {
+	Servico(final PedidoIO pedidoIO, final MapaComando<Situacao> comandos, final ProdutosGateway produtosGateway) {
 		this.pedidoIO = pedidoIO;
 		this.comandos = comandos;
+		this.produtosGateway = produtosGateway;
 	}
 
 	@Override
@@ -23,18 +28,19 @@ class Servico implements Pedidos {
 
 		log.info("Novo pedido");
 
-		final Collection<Produto> produtos = pedidoIO.produtos(novoPedido);
+		final Collection<Integer> identificadoresProdutos = novoPedido.identificadoresProdutos();
 
-		final Pedido pedido = new Pedido(produtos);
+		final IdentificadorPedido identificadorPedido = pedidoIO.reservaPedido(novoPedido.identificadoresProdutos());
 
-		final IdentificadorPedido identificadorPedido = pedidoIO.reservaPedido(pedido.identificadoresProduto());
+		final Collection<Produto> produtos = produtosGateway.produtos(identificadoresProdutos);
 
-		if (identificadorPedido.pedidoReservado()) {
-			comandos.executar(Situacao.DISPONIVEL, comando -> comando
-					.inserirObjeto(new CalculoFrete(new Pedido(pedido, identificadorPedido), novoPedido)));
+		final Pedido pedido = new Pedido(produtos, identificadorPedido);
+
+		if (pedido.reservado()) {
+			comandos.executar(Situacao.DISPONIVEL,
+					comando -> comando.inserirObjeto(new CalculoFrete(pedido, novoPedido)));
 		} else {
-			comandos.executar(Situacao.INDISPONIVEL,
-					comando -> comando.inserirObjeto(new NovoPedido(pedido, novoPedido)));
+			comandos.executar(Situacao.INDISPONIVEL, comando -> comando.inserirObjeto(novoPedido));
 		}
 
 	}
@@ -53,7 +59,9 @@ class Servico implements Pedidos {
 
 		log.info("Pedido pago");
 
-		// DISPARAR EVENTO PARA MUDAR SITUAÇÃO DE PEDIDO PARA PAGO
+		pedidoIO.pago(pedidoPago.obterIdentificadorPedido());
+
+		comandos.executar(Situacao.PAGO, comando -> comando.inserirObjeto(pedidoPago));
 
 	}
 
