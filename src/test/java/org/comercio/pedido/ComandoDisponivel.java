@@ -23,7 +23,7 @@ class ComandoDisponivel implements Comando {
 		visita = Boolean.TRUE;
 	}
 
-	public Boolean visitado() {
+	Boolean visitado() {
 		return visita;
 	}
 

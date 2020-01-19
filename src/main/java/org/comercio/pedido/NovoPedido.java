@@ -17,10 +17,10 @@ public class NovoPedido {
 
 	private final Integer codigoEndereco;
 
-	private final Collection<ProdutoCarrinho> produtos;
+	private final Collection<ProdutoCarrinho> produtosCarrinho;
 
 	public NovoPedido(final Integer codigoCliente, final Integer codigoEndereco,
-			final Collection<ProdutoCarrinho> produtos) {
+			final Collection<ProdutoCarrinho> produtosCarrinho) {
 		if (codigoCliente == null || codigoCliente <= 0) {
 			throw new EntradaInformacoesException(
 					"Identificador de cliente não pode ser nulo ou com valor menor que 0");
@@ -31,14 +31,14 @@ public class NovoPedido {
 					"Identificador de endereço não pode ser nulo ou com valor menor que 0");
 		}
 		this.codigoEndereco = codigoEndereco;
-		if (produtos == null || produtos.isEmpty()) {
+		if (produtosCarrinho == null || produtosCarrinho.isEmpty()) {
 			throw new EntradaInformacoesException("Coleção de produtos não pode ser nulo ou vazio");
 		}
-		this.produtos = produtos;
+		this.produtosCarrinho = produtosCarrinho;
 	}
 
-	public Collection<Integer> identificadoresProdutos() {
-		return produtos.stream().map(ProdutoCarrinho::getCodigo).collect(Collectors.toSet());
+	Collection<Integer> identificadoresProdutos() {
+		return produtosCarrinho.stream().map(ProdutoCarrinho::getCodigo).collect(Collectors.toSet());
 	}
 
 }

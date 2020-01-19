@@ -23,7 +23,7 @@ class ComandoIndisponivel implements Comando {
 		return this;
 	}
 
-	public Boolean visitado() {
+	Boolean visitado() {
 		return visita;
 	}
 

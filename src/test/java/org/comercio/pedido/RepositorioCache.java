@@ -13,13 +13,13 @@ class RepositorioCache implements PedidoIO {
 
 	private Situacao situacao;
 
-	public RepositorioCache(Integer identificador) {
+	RepositorioCache(Integer identificador) {
 		this.identificador = identificador;
 		situacao = Situacao.AGUARDANDO_PAGAMENTO;
 	}
 
 	@Override
-	public IdentificadorPedido reservaPedido(final Collection<Integer> collection) {
+	public IdentificadorPedido reservaPedido(final Collection<Integer> identificadoresProduto) {
 		statusAcesso += 1;
 		return new IdentificadorPedido(identificador);
 	}

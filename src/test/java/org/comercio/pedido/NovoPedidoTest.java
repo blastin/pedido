@@ -9,6 +9,7 @@ import org.comercio.MapeamentoComandos;
 import org.comercio.produto.ProdutoCarrinho;
 import org.comercio.produto.ProdutosGateway;
 import org.comercio.produto.ServicoProduto;
+import org.comercio.produto.ServicoProdutoRetornoDiferente;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,6 +34,38 @@ public class NovoPedidoTest {
 		final Pedidos pedidos = new Servico(pedidoIO, comandos, produtosGateway);
 
 		final NovoPedido novoPedido = new NovoPedido(1, 1, Collections.singleton(new ProdutoCarrinho(1, CUSTO)));
+
+		pedidos.novoPedido(novoPedido);
+
+		Assert.assertTrue("Repositorio Cache Acessado", pedidoIO.repositorioAcessado());
+
+		Assert.assertTrue("comando deve ser visitado", comando.visitado());
+
+	}
+
+	@Test
+	public void realizarNovoPedidoComIdentificadoresRetornoDiferenteDoDesejadoTest() {
+
+		final RepositorioCache pedidoIO = new RepositorioCache(1) {
+
+			@Override
+			public IdentificadorPedido reservaPedido(final Collection<Integer> collection) {
+				super.reservaPedido(collection);
+				return new IdentificadorPedido(1);
+			}
+
+		};
+
+		final ComandoIndisponivel comando = new ComandoIndisponivel();
+
+		final MapaComando<Situacao> comandos = new MapeamentoComandos<Situacao>().inserirComando(Situacao.INDISPONIVEL,
+				comando);
+
+		final ProdutosGateway produtosGateway = new ServicoProdutoRetornoDiferente();
+
+		final Pedidos pedidos = new Servico(pedidoIO, comandos, produtosGateway);
+
+		final NovoPedido novoPedido = new NovoPedido(2, 5, Collections.singleton(new ProdutoCarrinho(546, "200")));
 
 		pedidos.novoPedido(novoPedido);
 

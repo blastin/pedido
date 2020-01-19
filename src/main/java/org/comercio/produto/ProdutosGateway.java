@@ -4,6 +4,6 @@ import java.util.Collection;
 
 public interface ProdutosGateway {
 
-	Collection<Produto> produtos(final Collection<Integer> novoPedido);
+	Collection<Produto> produtos(final Collection<ProdutoCarrinho> produtoCarrinhos);
 
 }

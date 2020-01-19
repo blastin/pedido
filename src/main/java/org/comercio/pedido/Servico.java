@@ -28,13 +28,11 @@ class Servico implements Pedidos {
 
 		log.info("Novo pedido");
 
-		final Collection<Integer> identificadoresProdutos = novoPedido.identificadoresProdutos();
+		final Collection<Produto> produtos = produtosGateway.produtos(novoPedido.getProdutosCarrinho());
 
 		final IdentificadorPedido identificadorPedido = pedidoIO.reservaPedido(novoPedido.identificadoresProdutos());
 
-		final Collection<Produto> produtos = produtosGateway.produtos(identificadoresProdutos);
-
-		final Pedido pedido = new Pedido(produtos, identificadorPedido);
+		final Pedido pedido = new Pedido(produtos, identificadorPedido, novoPedido);
 
 		if (pedido.reservado()) {
 			comandos.executar(Situacao.DISPONIVEL,

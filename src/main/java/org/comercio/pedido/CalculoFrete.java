@@ -13,7 +13,7 @@ public class CalculoFrete {
 
 	private final Integer codigoPedido;
 
-	private final Integer codigoEndeco;
+	private final Integer codigoEndereco;
 
 	private final BigDecimal custoPedido;
 
@@ -21,6 +21,6 @@ public class CalculoFrete {
 		codigoPedido = pedido.getCodigo();
 		custoPedido = pedido.custoTotal();
 		codigoCliente = novoPedido.getCodigoCliente();
-		codigoEndeco = novoPedido.getCodigoEndereco();
+		codigoEndereco = novoPedido.getCodigoEndereco();
 	}
 }
