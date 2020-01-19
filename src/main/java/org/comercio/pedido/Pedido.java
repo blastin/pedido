@@ -3,6 +3,7 @@ package org.comercio.pedido;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.comercio.EntradaInformacoesException;
 import org.comercio.produto.Produto;
