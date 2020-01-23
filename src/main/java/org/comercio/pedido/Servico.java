@@ -30,7 +30,7 @@ class Servico implements Pedidos {
 
 		final Collection<Produto> produtos = produtosGateway.produtos(novoPedido.getProdutosCarrinho());
 
-		final IdentificadorPedido identificadorPedido = pedidoIO.reservaPedido(novoPedido.identificadoresProdutos());
+		final IdentificadorPedido identificadorPedido = pedidoIO.reservar(novoPedido.identificadoresProdutos());
 
 		final Pedido pedido = new Pedido(produtos, identificadorPedido, novoPedido);
 
@@ -48,7 +48,23 @@ class Servico implements Pedidos {
 
 		log.info("Redisponibilizar pedido");
 
-		// DISPARAR EVENTO PARA REDISPONIBILIZAR PEDIDO
+		final IdentificadorPedido identificadorPedido = new IdentificadorPedido(
+				pedidoRedisponibilizado.getIdentificadorPedido());
+
+		final Situacao situacao = pedidoIO.situacao(identificadorPedido);
+
+		if (situacao.favoravelParaRedisponibilizacao()) {
+
+			pedidoIO.redisponibilizar(identificadorPedido);
+
+			comandos.executar(Situacao.REDISPONIBILIZADO, comando -> comando.inserirObjeto(pedidoRedisponibilizado));
+
+		} else {
+
+			comandos.executar(Situacao.SEM_REDISPONIBILIZACAO,
+					comando -> comando.inserirObjeto(pedidoRedisponibilizado));
+
+		}
 
 	}
 

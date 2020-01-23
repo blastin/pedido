@@ -19,6 +19,8 @@ public class NovoPedidoTest {
 
 	private static final Collection<ProdutoCarrinho> COLECAO = Collections.singleton(new ProdutoCarrinho(1, CUSTO));
 
+	private static final PedidoFabrica FABRICA = new PedidoFabricaImplementacao();
+
 	@Test
 	public void realizarNovoPedidoIndisponivelTest() {
 
@@ -31,7 +33,7 @@ public class NovoPedidoTest {
 
 		final ProdutosGateway produtosGateway = new ServicoProduto();
 
-		final Pedidos pedidos = new Servico(pedidoIO, comandos, produtosGateway);
+		final Pedidos pedidos = FABRICA.construir(pedidoIO, produtosGateway, comandos);
 
 		final NovoPedido novoPedido = new NovoPedido(1, 1, Collections.singleton(new ProdutoCarrinho(1, CUSTO)));
 
@@ -49,8 +51,8 @@ public class NovoPedidoTest {
 		final RepositorioCache pedidoIO = new RepositorioCache(1) {
 
 			@Override
-			public IdentificadorPedido reservaPedido(final Collection<Integer> collection) {
-				super.reservaPedido(collection);
+			public IdentificadorPedido reservar(final Collection<Integer> collection) {
+				super.reservar(collection);
 				return new IdentificadorPedido(1);
 			}
 
@@ -63,7 +65,7 @@ public class NovoPedidoTest {
 
 		final ProdutosGateway produtosGateway = new ServicoProdutoRetornoDiferente();
 
-		final Pedidos pedidos = new Servico(pedidoIO, comandos, produtosGateway);
+		final Pedidos pedidos = FABRICA.construir(pedidoIO, produtosGateway, comandos);
 
 		final NovoPedido novoPedido = new NovoPedido(2, 5, Collections.singleton(new ProdutoCarrinho(546, "200")));
 
@@ -81,8 +83,8 @@ public class NovoPedidoTest {
 		final RepositorioCache pedidoIO = new RepositorioCache(1) {
 
 			@Override
-			public IdentificadorPedido reservaPedido(final Collection<Integer> collection) {
-				super.reservaPedido(collection);
+			public IdentificadorPedido reservar(final Collection<Integer> collection) {
+				super.reservar(collection);
 				return new IdentificadorPedido(1);
 			}
 
@@ -95,7 +97,7 @@ public class NovoPedidoTest {
 
 		final ProdutosGateway produtosGateway = new ServicoProduto();
 
-		final Pedidos pedidos = new Servico(pedidoIO, comandos, produtosGateway);
+		final Pedidos pedidos = FABRICA.construir(pedidoIO, produtosGateway, comandos);
 
 		final NovoPedido novoPedido = new NovoPedido(2, 5, Collections.singleton(new ProdutoCarrinho(546, "200")));
 

@@ -13,19 +13,21 @@ class RepositorioCache implements PedidoIO {
 
 	private Situacao situacao;
 
-	RepositorioCache(Integer identificador) {
+	private boolean pedidoRedisponibilizado;
+
+	RepositorioCache(final Integer identificador) {
 		this.identificador = identificador;
 		situacao = Situacao.AGUARDANDO_PAGAMENTO;
 	}
 
 	@Override
-	public IdentificadorPedido reservaPedido(final Collection<Integer> identificadoresProduto) {
+	public IdentificadorPedido reservar(final Collection<Integer> identificadoresProduto) {
 		statusAcesso += 1;
 		return new IdentificadorPedido(identificador);
 	}
 
 	@Override
-	public void pago(Integer obterIdentificadorPedido) {
+	public void pago(final Integer obterIdentificadorPedido) {
 		log.info("Pedido pago");
 		situacao = Situacao.PAGO;
 	}
@@ -36,6 +38,21 @@ class RepositorioCache implements PedidoIO {
 
 	Boolean pedidoFoiPago() {
 		return situacao.equals(Situacao.PAGO);
+	}
+
+	@Override
+	public Situacao situacao(final IdentificadorPedido identificadorPedido) {
+		return Situacao.AGUARDANDO_PAGAMENTO;
+	}
+
+	@Override
+	public void redisponibilizar(final IdentificadorPedido identificadorPedido) {
+		log.info("Pedido redisponibilizado");
+		pedidoRedisponibilizado = true;
+	}
+
+	public boolean pedidoFoiRedisponibilizado() {
+		return pedidoRedisponibilizado;
 	}
 
 }

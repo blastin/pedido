@@ -10,6 +10,8 @@ import org.junit.Test;
 
 public class PedidoPagoTest {
 
+	private static final PedidoFabrica FABRICA = new PedidoFabricaImplementacao();
+
 	@Test
 	public void quandoPedidoMudaParaPago() {
 
@@ -23,7 +25,7 @@ public class PedidoPagoTest {
 
 		final ProdutosGateway produtosGateway = new ServicoProduto();
 
-		final Pedidos pedidos = new Servico(pedidoIO, mapaComando, produtosGateway);
+		final Pedidos pedidos = FABRICA.construir(pedidoIO, produtosGateway, mapaComando);
 
 		final PedidoPago pedidoPago = new PedidoPago(1, 1);
 

@@ -19,7 +19,8 @@ public class ComandoPedidoPago implements Comando {
 
 	@Override
 	public void manipular() {
-		log.info("Comando para Pedido com identificador [cliente = {}, pedido = {} ], recebido", pedidoPago.obterIdentificadorCliente(), pedidoPago.obterIdentificadorPedido());
+		log.info("Comando para Pedido com identificador [cliente = {}, pedido = {} ], recebido",
+				pedidoPago.obterIdentificadorCliente(), pedidoPago.obterIdentificadorPedido());
 		comandoAcessado = true;
 	}
 
