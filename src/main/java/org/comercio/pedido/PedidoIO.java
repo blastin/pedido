@@ -4,8 +4,12 @@ import java.util.Collection;
 
 interface PedidoIO {
 
-	IdentificadorPedido reservaPedido(final Collection<Integer> identificadoresProduto);
+	IdentificadorPedido reservar(final Collection<Integer> identificadoresProduto);
 
-	void pago(Integer obterIdentificadorPedido);
+	void pago(final Integer obterIdentificadorPedido);
+
+	Situacao situacao(final IdentificadorPedido identificadorPedido);
+
+	void redisponibilizar(final IdentificadorPedido identificadorPedido);
 
 }

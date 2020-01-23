@@ -10,7 +10,7 @@ class ComandoDisponivel implements Comando {
 	private CalculoFrete calculoFrete;
 
 	private Boolean visita;
-	
+
 	@Override
 	public <T> Comando inserirObjeto(final T t) {
 		calculoFrete = (CalculoFrete) t;
